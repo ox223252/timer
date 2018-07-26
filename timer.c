@@ -77,7 +77,7 @@ pthread_t * timer ( const uint32_t time, void (*callback)( void * ), void * arg,
 	#if defined( TIMER_WITH_FOE ) && defined( FOE_WITH_THREAD )
 	if ( argFree )
 	{
-		setThreadKillOnExit ( ptr );
+		setThreadKillOnExit ( *ptr );
 		setFreeOnExit ( ptr );
 	}
 	#endif
@@ -116,7 +116,7 @@ void * intitWatchdog ( const uint16_t time, const bool argFree )
 	#if defined( TIMER_WITH_FOE ) && defined( FOE_WITH_THREAD )
 	if ( argFree )
 	{
-		setThreadKillOnExit ( ptr );
+		setThreadKillOnExit ( *ptr );
 		setFreeOnExit ( ptr );
 	}
 	#endif
