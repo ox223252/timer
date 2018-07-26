@@ -1,7 +1,7 @@
 # timer
 
 ## Exemple:
-For this exemple you need to get [freeOnExit][github.co/ox223252/freeOnExit] lib.
+For this exemple you need to get [freeOnExit](github.co/ox223252/freeOnExit) lib.
 
 ```C
 void exitS ( void * arg ) 
