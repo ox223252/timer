@@ -1,7 +1,7 @@
 #ifndef __TIMER_H__
 #define __TIMER_H__
 
-#if defined( TIMER_WITH_FOE ) && !defined( FOE_WITH_THREAD )
+#if defined( TIMER_WITH_FOE ) && defined( FOE_WITH_THREAD )
 #include "../freeOnExit/freeOnExit.h"
 #endif
 
