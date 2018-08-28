@@ -1,6 +1,10 @@
 #ifndef __TIMER_H__
 #define __TIMER_H__
 
+#include <pthread.h>
+#include <stdint.h>
+#include <stdbool.h>
+
 #if defined( TIMER_WITH_FOE ) && defined( FOE_WITH_THREAD )
 #include "../freeOnExit/freeOnExit.h"
 #endif
