@@ -38,3 +38,6 @@ int main ( void )
 ```Shell
 > gcc timer.c ../freeOnExit/freeOnExit.c -lpthread -DTIMER_WITH_FOE -DFOE_WITH_THREAD && ./a.out
 ```
+
+## NOTE:
+This lib doesn't work with valgrind
