@@ -37,6 +37,7 @@ static void * timerCounter ( void * arg )
 	pthread_exit ( NULL );
 }
 
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 static void * watchDog ( void * arg )
 {
 	while ( !_timer_watchDog.on || 
@@ -51,6 +52,7 @@ static void * watchDog ( void * arg )
 	printf ( "end watchdog\n" );
 	exit ( 0 );
 }
+#pragma GCC diagnostic pop
 
 pthread_t * timer ( const uint32_t time, void (*callback)( void * ), void * arg, const bool argFree )
 {
