@@ -1,58 +1,115 @@
 #ifndef __TIMER_H__
 #define __TIMER_H__
+////////////////////////////////////////////////////////////////////////////////
+/// \copiright ox223252, 2017
+///
+/// This program is free software: you can redistribute it and/or modify it
+///     under the terms of the GNU General Public License published by the Free
+///     Software Foundation, either version 2 of the License, or (at your
+///     option) any later version.
+///
+/// This program is distributed in the hope that it will be useful, but WITHOUT
+///     ANY WARRANTY; without even the implied of MERCHANTABILITY or FITNESS FOR
+///     A PARTICULAR PURPOSE. See the GNU General Public License for more
+///     details.
+///
+/// You should have received a copy of the GNU General Public License along with
+///     this program. If not, see <http://www.gnu.org/licenses/>
+////////////////////////////////////////////////////////////////////////////////
 
 #include <pthread.h>
 #include <stdint.h>
 #include <stdbool.h>
 
-#if defined( TIMER_WITH_FOE ) && defined( FOE_WITH_THREAD )
+#if defined ( TIMER_WITH_FOE ) && defined ( FOE_WITH_THREAD )
 #include "../freeOnExit/freeOnExit.h"
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-/// \fn pthread_t * timer ( const uint32_t time, void (*callback)( void * ), 
+/// \file timer.h
+/// \brief library to nanage threaded timer and watchdog
+/// \author ox223252
+/// \date 2018-08
+/// \copyright GPLv2
+/// \version 1.0
+/// \warning v1.0 only for Linux
+/// \bug NONE
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// \fn void * startTimer ( const uint32_t time, void (*callback)( void * ), 
 ///     void * arg, const bool argFree );
 /// \param[ in ] time : time in µseconds
 /// \param[ in ] callnback : callback function
 /// \param[ in ] arg : callback argument
-/// \param[ in ] argFree : boolean to use or not freeOnExit functions
 /// \brief set a timer before executin a function
+/// \retrun pointer on timer
 ////////////////////////////////////////////////////////////////////////////////
-pthread_t * timer ( const uint32_t time, void (*callback)( void * ), void * arg,
-	const bool freeOnExit );
+void * startTimer( const uint32_t time, void (*callback)( void * ), void * arg);
 
 ////////////////////////////////////////////////////////////////////////////////
-/// only one watchdog at time
+/// \fn int stopTimer ( void * timer );
+/// \param timer: pointer provided by startTimer
+/// \retrun 0 if OK else see errno for more details
 ////////////////////////////////////////////////////////////////////////////////
-/// \fn void * intitWatchdog ( const uint16_t time, const bool argFree );
-/// \param[ in ] time : watchdog timer before ending in seconds
-/// \param[ in ] argFree : boolean to use or not freeOnExit functions
-/// \brief init timer but it doesn't run
+int stopTimer ( void ** timer );
+
 ////////////////////////////////////////////////////////////////////////////////
-void * intitWatchdog ( const uint16_t time, const bool argFree );
+/// only one watchdog at a time
+////////////////////////////////////////////////////////////////////////////////
+/// \fn int watchdogInit ( const uint32_t time, void ( * fnc )( void * ), void * arg,
+///     bool restart );
+/// \param[ in ] time : watchdog timer before ending by 10ms step
+/// \param[ in ] fnc : function who need watchdog
+/// \param[ in ] arg : function args
+/// \param[ in ] restartg : restart function if watchdog interrupt occured
+/// \brief init watchdog for a particular function but it doesn't start it
+/// \retrun 0 if OK else see errno for more details
+////////////////////////////////////////////////////////////////////////////////
+int watchdogInit ( const uint32_t time, void * ( * fnc )( void * ), void * arg,
+	bool restart );
 
 ////////////////////////////////////////////////////////////////////////////////
 /// \fn void resetWatchdog ( void );
 /// \brief reset timing vaue
 ////////////////////////////////////////////////////////////////////////////////
-void resetWatchdog ( void );
+void watchdogReset ( void );
 
 ////////////////////////////////////////////////////////////////////////////////
 /// \fn void startWatchdog ( void );
-/// \brief start down counting
+/// \brief start watchdog
+/// \retrun 0 if OK else see errno for more details
 ////////////////////////////////////////////////////////////////////////////////
-void startWatchdog ( void );
+int watchdogStart ( void );
 
 ////////////////////////////////////////////////////////////////////////////////
-/// \fn void pauseWatchdog ( void );
-/// \brief stop down counting
+//// \fn int watchdogCoreActive ( void );
+/// \brief return status of thread
+/// \return -1 : not started / 0 endded / 1 working
 ////////////////////////////////////////////////////////////////////////////////
-void pauseWatchdog ( void );
+int watchdogCoreActive ( void );
 
 ////////////////////////////////////////////////////////////////////////////////
-/// \fn void stopWatchdog ( void );
-/// \brief remove watchdog
+//// \fn int watchdoActive ( void );
+/// \brief return status of thread
+/// \return -1 : not started / 0 endded / 1 working
 ////////////////////////////////////////////////////////////////////////////////
-void stopWatchdog ( void );
+int watchdoActive ( void );
+
+////////////////////////////////////////////////////////////////////////////////
+/// \fn bool watchdogWait ( bool wait );
+/// \param wait : wait status
+/// \brief set watchdog status in pause without stoping it
+/// \retrun old status
+////////////////////////////////////////////////////////////////////////////////
+bool watchdogWait ( bool wait );
+
+////////////////////////////////////////////////////////////////////////////////
+/// \fn void stopWatchdog ( bool stopCoreFnc );
+/// \param[ in ] stopCoreFnc : stop coreFnc
+/// \brief stop watchdog
+/// \retrun 0 if OK else see errno for more details
+////////////////////////////////////////////////////////////////////////////////
+int watchdogStop ( bool stopCoreFnc );
 
 #endif
