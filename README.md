@@ -235,6 +235,28 @@ int main ( void )
 
 Be care the two function work identicly if you let it endded normaly, but if you use a Ctrl^C the second one will not manage it and you will have memory leaks.
 
+## Result:
+```Shell
+> ./a.out
+start wait 1s at Thu Jan 16 19:52:24 2019
+timed function at Thu Jan 16 19:52:25 2019
+WD : active
+Core : not started
+ - start core function at : Thu Jan 16 19:52:26 2019
+WD : active
+Core : active
+ - start core function at : Thu Jan 16 19:52:29 2019
+ - start core function at : Thu Jan 16 19:52:32 2019
+ - start core function at : Thu Jan 16 19:52:35 2019
+WD : not started
+Core : not started
+
+Make job correctly
+ - start core function at : Thu Jan 16 19:52:37 2019
+ - stop core function at : Thu Jan 16 19:52:42 2019
+ >
+```
+
 ## functions:
 ```C
 void * startTimer( const uint32_t time, void (*callback)( void * ), void * arg);
