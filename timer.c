@@ -193,7 +193,7 @@ int watchdogInit ( const uint32_t time, void * ( * fnc )( void * ), void * arg, 
 	_timer_watchdog.time = time;
 	_timer_watchdog.flag.on = 0;
 	_timer_watchdog.flag.wait = 0;
-	_timer_watchdog.flag.restart = 1;
+	_timer_watchdog.flag.restart = restart;
 	_timer_watchdog.coreId = 0;
 
 	_timer_watchdog.fnc = fnc;
